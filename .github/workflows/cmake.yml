@@ -1,4 +1,4 @@
-name: Samurai's Hello World Tests
+name: Samurai's Files Tests
 
 on:
   push:
@@ -47,8 +47,6 @@ jobs:
     steps:
       - name: Download student repository
         uses: actions/checkout@v4
-        with:
-          ref: master
 
       - name: Install build tools
         uses: aminya/setup-cpp@v1
@@ -57,11 +55,74 @@ jobs:
           ninja: true
           cmake: true
 
+      - name: Install required packages
+        run: sudo apt-get update && sudo apt-get install -y tree
+
       - name: Fixup sanitizer(s)
         run: sudo sysctl vm.mmap_rnd_bits=28
 
       - name: Build solution
         run: cmake -S . --preset "${{ matrix.buildtype }}" -G Ninja && cmake --build . -j
 
-      - name: Run hello
-        run: sudo ./hello
+      - name: rmtrash
+        run: |
+          names=("abc" "a c" "*" "***" "this is sparta" "normal_name")
+
+          for name in "${names[@]}"; do
+            touch "${name}"
+            echo "Generated file named \"${name}\"."
+          done
+
+          for name in "${names[@]}"; do
+            sudo ./rmtrash "${name}"
+          done
+
+          for name in "${names[@]}"; do
+            if [ -f "${name}" ]; then
+              echo "File named \"${name}\" should not exists after removing."
+              exit 1
+            fi
+          done
+
+          cat ~/.trash.log
+
+      - name: backup
+        run: |
+          mkdir -p ~/source
+
+          names=("abc" "a c" "*" "***" "this is sparta" "normal_name")
+          directories=("folder1" "fold er2")
+
+          for name in "${names[@]}"; do
+            touch "~/source/${name}"
+            echo "Generated file named \"${name}\"."
+            for directory in "${directories[@]}"; do
+              mkdir -p ~/source/"${directory}"
+              touch "~/source/${directory}/${name}"
+              echo "Generated file named \"${name}\" in \"${directory}\"."
+            done
+          done
+
+          sudo ./backup
+          cat ~/backup-report
+
+          new_names=("abc2" "a c2" "*2" "***2" "this is sparta2" "normal_name2")
+          new_directories=("folder1 2" "fold er2 2")
+
+          for name in "${new_names[@]}"; do
+            touch "~/source/${name}"
+            echo "Generated file named \"${name}\"."
+            for directory in "${new_directories[@]}"; do
+              mkdir -p ~/source/"${directory}"
+              touch "~/source/${directory}/${name}"
+              echo "Generated file named \"${name}\" in \"${directory}\"."
+            done
+          done
+
+          sudo ./backup
+          cat ~/backup-report
+
+      - name: upback
+        run: |
+          sudo ./upback
+          tree ~/restore/

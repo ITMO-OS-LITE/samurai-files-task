@@ -1,5 +1,12 @@
-# Шаблон лабораторной работы
+# Лабораторная работа №4. Работа с файлово-каталожной системой в Linux
 
-Текущий статус тестирования GitHub Actions: [![CI/CD](../../actions/workflows/bash.yml/badge.svg?branch=master&event=push)](../../actions/workflows/bash.yml).
+Текущий статус тестирования GitHub Actions: [![CI/CD](../../actions/workflows/cmake.yml/badge.svg?branch=master&event=push)](../../actions/workflows/cmake.yml).
 
-Текущий статус сборки и тестирования GitHub Actions (путь самурая): [![CI/CD](../../actions/workflows/cmake.yml/badge.svg?branch=master&event=push)](../../actions/workflows/cmake.yml).
+Ниже представлена таблица выполнения заданий в определенных исходных файлах. Если вы удалите какой-то из них, то тестирование пройдёт неуспешно. Если вы создадите своё, то оно не будет участвовать в тестировании. При желании, вы можете редактировать [CMake-проект](CMakeLists.txt).
+
+| № | Исходный код           |
+|:-:|:-----------------------|
+| 1 | [`rmtrash`](rmtrash.c) |
+| 2 | [`untrash`](untrash.c) |
+| 3 | [`backup`](backup.c)   |
+| 4 | [`upback`](upback.c)   |
